@@ -9,29 +9,30 @@ import MovieList from './components/main/MovieList';
 import MovieWatched from './components/main/MovieWatched';
 import Error from './components/Error';
 import Loader from './components/Loader';
-import { tempWatchedData } from './data/tempWatchedData';
+import MovieDetails from './components/main/MovieDetails';
 
 export default function App() {
-  const [movies, setMovies] = useState('');
-  const [query, setQuery] = useState('');
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [query, setQuery] = useState('interstellar');
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
     async function getData() {
       try {
         setError('');
-        const key = import.meta.env.VITE_KEY_OMDBI;
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${key}&s=${query})`
+          `http://www.omdbapi.com/?apikey=${
+            import.meta.env.VITE_KEY_OMDBI
+          }&s=${query})`
         );
-
         const data = await res.json();
         console.log(data);
 
         if (data.Response === 'False') {
-          setError(data.Error);
+          setError(data.Error === 'Too many results.' ? '' : data.Error);
         }
 
         setMovies(data.Search);
@@ -57,12 +58,22 @@ export default function App() {
       <Main>
         <BoxMovie>
           {isLoading && <Loader />}
-          {!isLoading && !error && <MovieList movies={movies} />}
+          {!isLoading && !error && (
+            <MovieList
+              movies={movies}
+              selectedId={selectedId}
+              setSelectedId={setSelectedId}
+            />
+          )}
           {error && <Error message={error} />}
         </BoxMovie>
 
         <BoxMovie>
-          <MovieWatched watched={watched} />
+          {selectedId ? (
+            <MovieDetails movieId={selectedId} setSelectedId={setSelectedId} />
+          ) : (
+            <MovieWatched watched={watched} />
+          )}
         </BoxMovie>
       </Main>
     </>
