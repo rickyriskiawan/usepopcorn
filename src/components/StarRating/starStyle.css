@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.star-container {
+  display: flex;
+  gap: 4px;
+}
+
+.text {
+  line-height: 1;
+  margin: 0;
+}
+
+.star-style {
+  width: 48px;
+  height: 48px;
+  display: block;
+  cursor: pointer;
+}

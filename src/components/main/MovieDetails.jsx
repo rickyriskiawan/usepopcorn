@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import StarRating from '../StarRating/StarRating';
 
 export default function MovieDetails({ movieId, setSelectedId }) {
   const [movie, setMovie] = useState({});
@@ -10,19 +11,16 @@ export default function MovieDetails({ movieId, setSelectedId }) {
   useEffect(() => {
     async function getMovieDetails() {
       const key = import.meta.env.VITE_KEY_OMDBI;
-      const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${key}&i=${movieId}`,
-        {
-          method: 'GET',
-        }
-      );
+      const res = await fetch(`http://www.omdbapi.com/?apikey=${key}&i=${movieId}`, {
+        method: 'GET',
+        headers: { Accept: '*/*' },
+      });
       const data = await res.json();
-      console.log(data);
-
       setMovie(data);
     }
     getMovieDetails();
   }, [movieId]);
+
   return (
     <div className='details'>
       <header>
@@ -40,6 +38,7 @@ export default function MovieDetails({ movieId, setSelectedId }) {
         </div>
       </header>
       <section>
+        <StarRating />
         <p>
           <em>{movie.Plot}</em>
         </p>
