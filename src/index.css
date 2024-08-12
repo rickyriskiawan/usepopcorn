@@ -345,20 +345,6 @@ body {
   justify-content: center;
 }
 
-.container-star {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.star-container {
-  display: flex;
-}
-
-.text {
-  line-height: 1;
-  margin: 0;
-}
 /*
 SPACING SYSTEM (px)
 2 / 4 / 8 / 12 / 16 / 24 / 32 / 40 / 48 / 64 / 80 / 96 / 128

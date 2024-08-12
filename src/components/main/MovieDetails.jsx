@@ -3,6 +3,9 @@ import StarRating from '../StarRating/StarRating';
 
 export default function MovieDetails({ movieId, setSelectedId }) {
   const [movie, setMovie] = useState({});
+  const [movieRating, setMovieRating] = useState(0);
+
+  console.log(`ini movie Rating ${movieRating}`);
 
   const onBack = () => {
     setSelectedId(null);
@@ -38,7 +41,9 @@ export default function MovieDetails({ movieId, setSelectedId }) {
         </div>
       </header>
       <section>
-        <StarRating />
+        <div className='rating'>
+          <StarRating maxRating={10} onSetRating={setMovieRating} size={24} />
+        </div>
         <p>
           <em>{movie.Plot}</em>
         </p>
