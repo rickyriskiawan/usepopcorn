@@ -23,7 +23,9 @@ export default function App() {
     async function getData() {
       try {
         setError('');
-        const res = await fetch(`http://www.omdbapi.com/?apikey=${import.meta.env.VITE_KEY_OMDBI}&s=${query})`);
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${import.meta.env.VITE_KEY_OMDBI}&s=${query})`
+        );
         const data = await res.json();
 
         if (data.Response === 'False') {
@@ -53,7 +55,9 @@ export default function App() {
       <Main>
         <BoxMovie>
           {isLoading && <Loader />}
-          {!isLoading && !error && <MovieList movies={movies} selectedId={selectedId} setSelectedId={setSelectedId} />}
+          {!isLoading && !error && (
+            <MovieList movies={movies} selectedId={selectedId} setSelectedId={setSelectedId} />
+          )}
           {error && <Error message={error} />}
         </BoxMovie>
 
