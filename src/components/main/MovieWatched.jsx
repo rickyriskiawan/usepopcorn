@@ -1,9 +1,8 @@
-export default function MovieWatched({ watched }) {
-  const average = (arr) =>
-    arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
-  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
+export default function MovieWatched({ watchedList }) {
+  const average = (arr) => arr.reduce((acc, cur) => acc + cur / arr.length, 0);
+  const avgImdbRating = average(watchedList.map((movie) => movie.imdbRating));
+  const avgUserRating = average(watchedList.map((movie) => movie.userRating));
+  const avgRuntime = average(watchedList.map((movie) => movie.Runtime));
 
   return (
     <>
@@ -12,25 +11,25 @@ export default function MovieWatched({ watched }) {
         <div>
           <p>
             <span>#️⃣</span>
-            <span>{watched.length} movies</span>
+            <span>{watchedList.length} movies</span>
           </p>
           <p>
             <span>⭐️</span>
-            <span>{avgImdbRating}</span>
+            <span>{parseFloat(avgImdbRating.toFixed(1))}</span>
           </p>
           <p>
             <span>🌟</span>
-            <span>{avgUserRating}</span>
+            <span>{parseFloat(avgUserRating).toFixed(1)}</span>
           </p>
           <p>
             <span>⏳</span>
-            <span>{avgRuntime} min</span>
+            <span>{Math.floor(avgRuntime)} min</span>
           </p>
         </div>
       </div>
 
       <ul className='list'>
-        {watched.map((movie) => (
+        {watchedList.map((movie) => (
           <li key={movie.imdbID}>
             <img src={movie.Poster} alt={`${movie.Title} poster`} />
             <h3>{movie.Title}</h3>
@@ -45,7 +44,7 @@ export default function MovieWatched({ watched }) {
               </p>
               <p>
                 <span>⏳</span>
-                <span>{movie.runtime} min</span>
+                <span>{movie.Runtime} min</span>
               </p>
             </div>
           </li>

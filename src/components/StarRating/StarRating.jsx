@@ -15,7 +15,6 @@ export default function StarRating({
 
   const handleRating = (rating) => {
     setRating(rating);
-    console.log(onSetRating);
     onSetRating ? onSetRating(rating) : '';
   };
 

@@ -14,7 +14,7 @@ import MovieDetails from './components/main/MovieDetails';
 export default function App() {
   const [query, setQuery] = useState('interstellar');
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  const [watchedList, setWatchedList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedId, setSelectedId] = useState(null);
@@ -63,9 +63,14 @@ export default function App() {
 
         <BoxMovie>
           {selectedId ? (
-            <MovieDetails movieId={selectedId} setSelectedId={setSelectedId} />
+            <MovieDetails
+              movieId={selectedId}
+              setSelectedId={setSelectedId}
+              watchedList={watchedList}
+              setWatchedList={setWatchedList}
+            />
           ) : (
-            <MovieWatched watched={watched} />
+            <MovieWatched watchedList={watchedList} />
           )}
         </BoxMovie>
       </Main>

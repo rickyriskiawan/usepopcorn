@@ -2,16 +2,10 @@ import { useEffect, useState } from 'react';
 import StarRating from '../StarRating/StarRating';
 import Loader from '../Loader';
 
-export default function MovieDetails({ movieId, setSelectedId }) {
+export default function MovieDetails({ movieId, setSelectedId, watchedList, setWatchedList }) {
   const [movie, setMovie] = useState({});
   const [movieRating, setMovieRating] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log(`ini movie Rating ${movieRating}`);
-
-  const onBack = () => {
-    setSelectedId(null);
-  };
 
   useEffect(() => {
     async function getMovieDetails() {
@@ -21,6 +15,7 @@ export default function MovieDetails({ movieId, setSelectedId }) {
         const res = await fetch(`http://www.omdbapi.com/?apikey=${key}&i=${movieId}`);
         const data = await res.json();
         setMovie(data);
+
         setIsLoading(false);
       } catch (error) {
         console.log(error.message);
@@ -31,6 +26,33 @@ export default function MovieDetails({ movieId, setSelectedId }) {
     getMovieDetails();
   }, [movieId]);
 
+  const handleBack = () => {
+    setSelectedId(null);
+  };
+
+  const handleAddtoWatchedList = () => {
+    const newWatchedData = {
+      imdbID: movie.imdbID,
+      Title: movie.Title,
+      Poster: movie.Poster,
+      imdbRating: parseFloat(movie.imdbRating),
+      userRating: movieRating,
+      Runtime: parseInt(movie.Runtime.split(' ')[0]),
+    };
+
+    setWatchedList([...watchedList, newWatchedData]);
+    handleBack();
+  };
+
+  const handleRemoveFromWatchedList = () => {
+    setWatchedList(watchedList.filter((watched) => movie.imdbID !== watched.imdbID));
+    handleBack();
+  };
+
+  const isWatched = watchedList.filter((watched) => movie.imdbID === watched.imdbID);
+
+  console.log(isWatched);
+
   return (
     <div className='details'>
       {isLoading ? (
@@ -38,7 +60,7 @@ export default function MovieDetails({ movieId, setSelectedId }) {
       ) : (
         <>
           <header>
-            <button className='btn-back' onClick={onBack}>
+            <button className='btn-back' onClick={handleBack}>
               &larr;
             </button>
             <img src={movie.Poster} alt={`Poster of ${movie.Title}`} />
@@ -53,7 +75,31 @@ export default function MovieDetails({ movieId, setSelectedId }) {
           </header>
           <section>
             <div className='rating'>
-              <StarRating maxRating={10} onSetRating={setMovieRating} size={24} />
+              {isWatched.length > 0 ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    onSetRating={setMovieRating}
+                    size={24}
+                    defaultRating={isWatched[0].userRating}
+                  />
+                  <button className='btn-remove' onClick={handleRemoveFromWatchedList}>
+                    - Remove From Watched List
+                  </button>
+                </>
+              ) : (
+                <>
+                  <StarRating maxRating={10} onSetRating={setMovieRating} size={24} />
+                  <button className='btn-add' onClick={handleAddtoWatchedList}>
+                    + Add to Watched List
+                  </button>
+                </>
+              )}
+
+              {/* <StarRating maxRating={10} onSetRating={setMovieRating} size={24} />
+              <button className='btn-add' onClick={handleAddToListWatched}>
+                + Add to Watched List
+              </button> */}
             </div>
             <p>
               <em>{movie.Plot}</em>
