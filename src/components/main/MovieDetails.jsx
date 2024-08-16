@@ -27,6 +27,13 @@ export default function MovieDetails({ movieId, setSelectedId, watchedList, setW
     getMovieDetails();
   }, [movieId]);
 
+  useEffect(() => {
+    if (movie.Title === undefined) return;
+    document.title = `Movie | ${movie.Title}`;
+
+    return () => (document.title = 'UsePopcorn');
+  });
+
   const handleBack = () => {
     setSelectedId(null);
   };
