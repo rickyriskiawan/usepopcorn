@@ -70,7 +70,7 @@ export default function App() {
               setWatchedList={setWatchedList}
             />
           ) : (
-            <MovieWatched watchedList={watchedList} />
+            <MovieWatched watchedList={watchedList} setWatchedList={setWatchedList} />
           )}
         </BoxMovie>
       </Main>

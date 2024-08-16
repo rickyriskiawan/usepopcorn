@@ -1,8 +1,12 @@
-export default function MovieWatched({ watchedList }) {
+export default function MovieWatched({ watchedList, setWatchedList }) {
   const average = (arr) => arr.reduce((acc, cur) => acc + cur / arr.length, 0);
   const avgImdbRating = average(watchedList.map((movie) => movie.imdbRating));
   const avgUserRating = average(watchedList.map((movie) => movie.userRating));
   const avgRuntime = average(watchedList.map((movie) => movie.Runtime));
+
+  const handleDelete = (movieID) => {
+    setWatchedList(watchedList.filter((watched) => watched.imdbID !== movieID));
+  };
 
   return (
     <>
@@ -46,6 +50,10 @@ export default function MovieWatched({ watchedList }) {
                 <span>⏳</span>
                 <span>{movie.Runtime} min</span>
               </p>
+
+              <button className='btn-delete' onClick={() => handleDelete(movie.imdbID)}>
+                X
+              </button>
             </div>
           </li>
         ))}

@@ -6,6 +6,7 @@ export default function MovieDetails({ movieId, setSelectedId, watchedList, setW
   const [movie, setMovie] = useState({});
   const [movieRating, setMovieRating] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const isWatched = watchedList.filter((watched) => movie.imdbID === watched.imdbID);
 
   useEffect(() => {
     async function getMovieDetails() {
@@ -49,10 +50,6 @@ export default function MovieDetails({ movieId, setSelectedId, watchedList, setW
     handleBack();
   };
 
-  const isWatched = watchedList.filter((watched) => movie.imdbID === watched.imdbID);
-
-  console.log(isWatched);
-
   return (
     <div className='details'>
       {isLoading ? (
@@ -95,11 +92,6 @@ export default function MovieDetails({ movieId, setSelectedId, watchedList, setW
                   </button>
                 </>
               )}
-
-              {/* <StarRating maxRating={10} onSetRating={setMovieRating} size={24} />
-              <button className='btn-add' onClick={handleAddToListWatched}>
-                + Add to Watched List
-              </button> */}
             </div>
             <p>
               <em>{movie.Plot}</em>
