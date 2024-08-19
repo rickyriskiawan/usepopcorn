@@ -14,10 +14,14 @@ import MovieDetails from './components/main/MovieDetails';
 export default function App() {
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
-  const [watchedList, setWatchedList] = useState([]);
+  const [watchedList, setWatchedList] = useState(getWatchedList);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedId, setSelectedId] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem('watched', JSON.stringify(watchedList));
+  }, [watchedList]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -51,6 +55,11 @@ export default function App() {
       abortController.abort();
     };
   }, [query]);
+
+  function getWatchedList() {
+    const storeWatchedList = localStorage.getItem('watched');
+    return JSON.parse(storeWatchedList);
+  }
 
   return (
     <>
