@@ -8,6 +8,24 @@ export default function MovieDetails({ movieId, setSelectedId, watchedList, setW
   const [isLoading, setIsLoading] = useState(false);
   const isWatched = watchedList.filter((watched) => movie.imdbID === watched.imdbID);
 
+  const handleBack = () => {
+    setSelectedId(null);
+  };
+
+  useEffect(() => {
+    function callback(e) {
+      if (e.code === 'Escape') {
+        handleBack();
+        console.log('closing');
+      }
+    }
+    document.addEventListener('keydown', callback);
+
+    return () => {
+      document.removeEventListener('keydown', callback);
+    };
+  }, [handleBack]);
+
   useEffect(() => {
     async function getMovieDetails() {
       try {
@@ -33,10 +51,6 @@ export default function MovieDetails({ movieId, setSelectedId, watchedList, setW
 
     return () => (document.title = 'UsePopcorn');
   });
-
-  const handleBack = () => {
-    setSelectedId(null);
-  };
 
   const handleAddtoWatchedList = () => {
     const newWatchedData = {

@@ -12,7 +12,7 @@ import Loader from './components/Loader';
 import MovieDetails from './components/main/MovieDetails';
 
 export default function App() {
-  const [query, setQuery] = useState('interstellar');
+  const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
   const [watchedList, setWatchedList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,8 +38,8 @@ export default function App() {
         setMovies(data.Search);
         setIsLoading(false);
       } catch (err) {
-        console.log(err.name);
         if (err.name !== 'AbortError') {
+          console.log(err.message);
           setError(err.message);
         }
       } finally {
