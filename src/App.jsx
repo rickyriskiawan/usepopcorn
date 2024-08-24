@@ -10,56 +10,14 @@ import MovieWatched from './components/main/MovieWatched';
 import Error from './components/Error';
 import Loader from './components/Loader';
 import MovieDetails from './components/main/MovieDetails';
+import useMovies from './hooks/useMovies';
+import useWatchedMovies from './hooks/useWatchedMovie';
 
 export default function App() {
   const [query, setQuery] = useState('');
-  const [movies, setMovies] = useState([]);
-  const [watchedList, setWatchedList] = useState(getWatchedList);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { movies, isLoading, error } = useMovies(query);
+  const { watchedList, setWatchedList } = useWatchedMovies();
   const [selectedId, setSelectedId] = useState(null);
-
-  useEffect(() => {
-    localStorage.setItem('watched', JSON.stringify(watchedList));
-  }, [watchedList]);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    async function getData() {
-      try {
-        setError('');
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${import.meta.env.VITE_KEY_OMDBI}&s=${query})`,
-          { signal: abortController.signal }
-        );
-        const data = await res.json();
-
-        if (data.Response === 'False') {
-          setError(data.Error === 'Too many results.' ? '' : data.Error);
-        }
-
-        setMovies(data.Search);
-        setIsLoading(false);
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.log(err.message);
-          setError(err.message);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getData();
-    return () => {
-      abortController.abort();
-    };
-  }, [query]);
-
-  function getWatchedList() {
-    const storeWatchedList = localStorage.getItem('watched');
-    return JSON.parse(storeWatchedList);
-  }
 
   return (
     <>
