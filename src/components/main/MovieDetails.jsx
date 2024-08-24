@@ -1,49 +1,21 @@
 import { useEffect, useState } from 'react';
 import StarRating from '../StarRating/StarRating';
 import Loader from '../Loader';
+import useEventKeys from '../../hooks/useEventKeys';
+import useDetailsMovies from '../../hooks/useDetailsMovies';
 
 export default function MovieDetails({ movieId, setSelectedId, watchedList, setWatchedList }) {
-  const [movie, setMovie] = useState({});
+  const [movie, isLoading] = useDetailsMovies(movieId);
+  console.log(movie);
+
   const [movieRating, setMovieRating] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const isWatched = watchedList.filter((watched) => movie.imdbID === watched.imdbID);
 
   const handleBack = () => {
     setSelectedId(null);
   };
 
-  useEffect(() => {
-    function callback(e) {
-      if (e.code === 'Escape') {
-        handleBack();
-        console.log('closing');
-      }
-    }
-    document.addEventListener('keydown', callback);
-
-    return () => {
-      document.removeEventListener('keydown', callback);
-    };
-  }, [handleBack]);
-
-  useEffect(() => {
-    async function getMovieDetails() {
-      try {
-        setIsLoading(true);
-        const key = import.meta.env.VITE_KEY_OMDBI;
-        const res = await fetch(`http://www.omdbapi.com/?apikey=${key}&i=${movieId}`);
-        const data = await res.json();
-        setMovie(data);
-
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getMovieDetails();
-  }, [movieId]);
+  useEventKeys(handleBack, handleBack);
 
   useEffect(() => {
     if (movie.Title === undefined) return;
