@@ -4,14 +4,11 @@ import useEventKeys from '../../hooks/useEventKeys';
 export default function Search({ query, setQuery }) {
   const inputElement = useRef(null);
 
-  useEventKeys(setQuery, (event) => {
+  useEventKeys('Enter', () => {
     if (document.activeElement === inputElement.current) {
       return;
     }
-
-    if (event.code === 'Enter') {
-      inputElement.current.select();
-    }
+    inputElement.current.select();
   });
 
   return (
