@@ -6,8 +6,6 @@ import useDetailsMovies from '../../hooks/useDetailsMovies';
 
 export default function MovieDetails({ movieId, setSelectedId, watchedList, setWatchedList }) {
   const [movie, isLoading] = useDetailsMovies(movieId);
-  console.log(movie);
-
   const [movieRating, setMovieRating] = useState(0);
   const isWatched = watchedList.filter((watched) => movie.imdbID === watched.imdbID);
 
@@ -15,7 +13,7 @@ export default function MovieDetails({ movieId, setSelectedId, watchedList, setW
     setSelectedId(null);
   };
 
-  useEventKeys(handleBack, handleBack);
+  useEventKeys('Escape', handleBack);
 
   useEffect(() => {
     if (movie.Title === undefined) return;
